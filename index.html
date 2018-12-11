@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var r = new XMLHttpRequest();
+    r.open("GET", "https://huxley.apphb.com/departures/wby/10?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true", true);
+
+    r.onreadystatechange = function () {
+        if (r.readyState != 4 || r.status != 200) return;
+        var resp = JSON.parse(r.response);
+        if (resp.trainServices && resp.trainServices.length > 0) {
+
+            // Loop through the results
+            for (i = 0; i < resp.trainServices.length; i++) {
+
+                // Loop through the subsequent calling points
+                for (y = 0; y < resp.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
+
+                    if (resp.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName.includes("Woking")){
+                        console.log("The next train to leave from " + resp.locationName + " to " + resp.filterLocationName + " will get in at " + resp.trainServices[i].sta);
+                    }
+                    
+                }
+            }
+
+
+            //console.log(resp.trainServices);
+            //alert("The next train to arrive at " + resp.locationName + " from " + resp.filterLocationName + " will get in at " + resp.trainServices[0].sta);
+        } else {
+            //console.log(resp.trainServices);
+            //alert("Sorry, no trains from " + resp.filterLocationName + " arriving soon");
+        }
+    };
+    r.send();
+</script>
+
+</html>
