@@ -11,7 +11,7 @@
 </body>
 <script>
     var r = new XMLHttpRequest();
-    r.open("GET", "https://huxley.apphb.com/departures/wby/10?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true", true);
+    r.open("GET", "https://huxley.apphb.com/departures/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true", true);
 
     r.onreadystatechange = function () {
         if (r.readyState != 4 || r.status != 200) return;
@@ -24,19 +24,14 @@
                 // Loop through the subsequent calling points
                 for (y = 0; y < resp.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
 
-                    if (resp.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName.includes("Woking")){
-                        console.log("The next train to leave from " + resp.locationName + " to " + resp.filterLocationName + " will get in at " + resp.trainServices[i].sta);
+                    if (resp.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === "Woking"){
+                        alert("The next train to leave from " + resp.locationName + " to Guildford will leave at: " + resp.trainServices[i].std + " and is " + resp.trainServices[i].etd);
                     }
-                    
+
                 }
             }
-
-
-            //console.log(resp.trainServices);
-            //alert("The next train to arrive at " + resp.locationName + " from " + resp.filterLocationName + " will get in at " + resp.trainServices[0].sta);
         } else {
-            //console.log(resp.trainServices);
-            //alert("Sorry, no trains from " + resp.filterLocationName + " arriving soon");
+            // No data
         }
     };
     r.send();
