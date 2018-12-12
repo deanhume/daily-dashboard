@@ -50,8 +50,8 @@
     <!-- www.layoutit.com/grid/QqUvP00 -->
     <div class="grid-container">
         <div class="weather">
-            <div class="temperature">temp</div>
-            <div class="icon">icon</div>
+            <div class="temperature" id="temperature">temp</div>
+            <div class="icon" id="weatherIcon">icon</div>
         </div>
         <div class="trains">
             <div class="train-time" id="trainTime">train time</div>
@@ -62,6 +62,8 @@
 <script>
     const trainTime = document.getElementById('trainTime');
     const onTime = document.getElementById('onTime');
+    const temperature = document.getElementById('temperature');
+    const weatherIcon = document.getElementById('weatherIcon');
 
     async function logFetch(url) {
         try {
@@ -74,10 +76,12 @@
     }
 
     async function getTrainDetails() {
+        
+        // Hit the train API
         const trainApiUrl = 'https://huxley.apphb.com/delays/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
-
         const trainResult = await logFetch(trainApiUrl);
 
+        // Loop & sort through the results
         if (trainResult.trainServices && trainResult.trainServices.length > 0) {
 
             // Loop through the results
@@ -98,12 +102,18 @@
     // Weather icon http://openweathermap.org/img/w/10d.png https://openweathermap.org/weather-conditions
     // https://openweathermap.org/current
     async function getWeatherDetails() {
-        const weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
 
+        // Hit the weather API
+        const weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
         const weatherResult = await logFetch(weatherApiUrl);
 
-        console.log(weatherResult);
+        // Update the temp
+        const weatherTemperature = weatherResult.list[0].temp;
+        temperature.innerHTML = weatherTemperature.day;
 
+        // Update the icon
+        const weatherIconUrl = weatherResult.list[0].weather[0].icon;
+        weatherIcon.innerHTML = "<img src='http://openweathermap.org/img/w/" + weatherIconUrl + ".png'>";
 
     }
 
