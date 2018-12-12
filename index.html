@@ -3,42 +3,118 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>title</title>
+    <title>Daily Dashboard</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: "weather trains";
+        }
+
+        .weather {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-areas: ".""temperature""icon";
+            grid-area: weather;
+        }
+
+        .temperature {
+            grid-area: temperature;
+        }
+
+        .icon {
+            grid-area: icon;
+        }
+
+        .trains {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-areas: ".""train-time""on-time";
+            grid-area: trains;
+        }
+
+        .train-time {
+            grid-area: train-time;
+        }
+
+        .on-time {
+            grid-area: on-time;
+        }
+    </style>
 </head>
 
 <body>
-
+    <!-- www.layoutit.com/grid/QqUvP00 -->
+    <div class="grid-container">
+        <div class="weather">
+            <div class="temperature">temp</div>
+            <div class="icon">icon</div>
+        </div>
+        <div class="trains">
+            <div class="train-time" id="trainTime">train time</div>
+            <div class="on-time" id="onTime">on time</div>
+        </div>
+    </div>
 </body>
 <script>
-    var r = new XMLHttpRequest();
-    r.open("GET", "https://huxley.apphb.com/departures/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true", true);
+    const trainTime = document.getElementById('trainTime');
+    const onTime = document.getElementById('onTime');
 
-    r.onreadystatechange = function () {
-        if (r.readyState != 4 || r.status != 200) return;
-        var resp = JSON.parse(r.response);
-        if (resp.trainServices && resp.trainServices.length > 0) {
+    async function logFetch(url) {
+        try {
+            const response = await fetch(url);
+            return response.json();
+        }
+        catch (err) {
+            console.log('fetch failed', err);
+        }
+    }
+
+    async function getTrainDetails() {
+        const trainApiUrl = 'https://huxley.apphb.com/delays/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+
+        const trainResult = await logFetch(trainApiUrl);
+
+        if (trainResult.trainServices && trainResult.trainServices.length > 0) {
 
             // Loop through the results
-            for (i = 0; i < resp.trainServices.length; i++) {
+            for (i = 0; i < trainResult.trainServices.length; i++) {
 
                 // Loop through the subsequent calling points
-                for (y = 0; y < resp.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
+                for (y = 0; y < trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
 
-                    if (resp.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === "Woking"){
-                        alert("The next train to leave from " + resp.locationName + " to Guildford will leave at: " + resp.trainServices[i].std + " and is " + resp.trainServices[i].etd);
+                    if (trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === "Woking") {
+                        trainTime.innerHTML = trainResult.trainServices[i].std + " to Guildford";
+                        onTime.innerHTML = trainResult.trainServices[i].etd;
                     }
-
                 }
             }
-        } else {
-            // No data
         }
-    };
-    r.send();
+    }
 
-    // TODO: Add Weather API - https://openweathermap.org/current
-    // const weatherUrl = http://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a;
     // Weather icon http://openweathermap.org/img/w/10d.png https://openweathermap.org/weather-conditions
+    // https://openweathermap.org/current
+    async function getWeatherDetails() {
+        const weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
+
+        const weatherResult = await logFetch(weatherApiUrl);
+
+        console.log(weatherResult);
+
+
+    }
+
+    function init() {
+        getTrainDetails();
+        getWeatherDetails();
+    }
+
+    init();
+
+
 </script>
 
 </html>
