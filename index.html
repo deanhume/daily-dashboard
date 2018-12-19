@@ -4,7 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Daily Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
     <style>
+        body{
+            font-family: 'Staatliches', cursive;
+            color: #fff;
+            font-size: 50px;
+        }
+
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -18,6 +25,8 @@
             grid-template-rows: 1fr 1fr 1fr;
             grid-template-areas: ".""temperature""icon";
             grid-area: weather;
+            background-color: #38c9ba;
+            text-align: center;
         }
 
         .temperature {
@@ -32,16 +41,29 @@
             display: grid;
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr 1fr;
-            grid-template-areas: ".""train-time""on-time";
+            grid-template-areas: "train-icon""train-time""on-time";
             grid-area: trains;
+            background-color: #6994e3;
+            text-align: center;
         }
 
         .train-time {
-            grid-area: train-time;
+            grid-area: train-time;           
+            padding-top: 50px;
+        }
+
+        .train-icon {
+            grid-area: train-icon;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
 
         .on-time {
             grid-area: on-time;
+        }
+
+        .trainIcon{
+            padding-top: 20px;
         }
     </style>
 </head>
@@ -54,77 +76,11 @@
             <div class="icon" id="weatherIcon">icon</div>
         </div>
         <div class="trains">
+            <div class="train-icon" id="trainIcon"><img src="img/train-time.svg" width="200px" /></div>
             <div class="train-time" id="trainTime">train time</div>
             <div class="on-time" id="onTime">on time</div>
         </div>
     </div>
 </body>
-<script>
-    const trainTime = document.getElementById('trainTime');
-    const onTime = document.getElementById('onTime');
-    const temperature = document.getElementById('temperature');
-    const weatherIcon = document.getElementById('weatherIcon');
-
-    async function logFetch(url) {
-        try {
-            const response = await fetch(url);
-            return response.json();
-        }
-        catch (err) {
-            console.log('fetch failed', err);
-        }
-    }
-
-    async function getTrainDetails() {
-        
-        // Hit the train API
-        const trainApiUrl = 'https://huxley.apphb.com/delays/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
-        const trainResult = await logFetch(trainApiUrl);
-
-        // Loop & sort through the results
-        if (trainResult.trainServices && trainResult.trainServices.length > 0) {
-
-            // Loop through the results
-            for (i = 0; i < trainResult.trainServices.length; i++) {
-
-                // Loop through the subsequent calling points
-                for (y = 0; y < trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
-
-                    if (trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === "Woking") {
-                        trainTime.innerHTML = trainResult.trainServices[i].std + " to Guildford";
-                        onTime.innerHTML = trainResult.trainServices[i].etd;
-                    }
-                }
-            }
-        }
-    }
-
-    // Weather icon http://openweathermap.org/img/w/10d.png https://openweathermap.org/weather-conditions
-    // https://openweathermap.org/current
-    async function getWeatherDetails() {
-
-        // Hit the weather API
-        const weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
-        const weatherResult = await logFetch(weatherApiUrl);
-
-        // Update the temp
-        const weatherTemperature = weatherResult.list[0].temp;
-        temperature.innerHTML = weatherTemperature.day;
-
-        // Update the icon
-        const weatherIconUrl = weatherResult.list[0].weather[0].icon;
-        weatherIcon.innerHTML = "<img src='http://openweathermap.org/img/w/" + weatherIconUrl + ".png'>";
-
-    }
-
-    function init() {
-        getTrainDetails();
-        getWeatherDetails();
-    }
-
-    init();
-
-
-</script>
-
+<script src="main.js"></script>
 </html>
