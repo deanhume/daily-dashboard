@@ -74,7 +74,7 @@ function mapWeatherIcon(weatherId) {
 async function getWeatherDetails() {
 
     // Hit the weather API
-    const weatherApiUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
+    const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
     const weatherResult = await logFetch(weatherApiUrl);
 
     // Update the temp
