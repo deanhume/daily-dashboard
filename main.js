@@ -18,12 +18,43 @@ async function logFetch(url) {
 }
 
 /**
+ * Checks the time of day and returns the 
+ * appropriate URL to hit based on train station.
+ */
+function buildTrainApiURl() {
+    const currentdate = new Date();
+
+    if (currentdate.getHours() > 13) {
+        return 'https://huxley.apphb.com/delays/gld/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+    } else {
+        return 'https://huxley.apphb.com/delays/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+    }
+
+}
+
+/**
+ * Checks the time of day and
+ * returns the appropriate station.
+ */
+function chooseCorrectStation() {
+    const currentdate = new Date();
+
+    // If we are in the afternoon look for return trip to Woking
+    if (currentdate.getHours() > 13) {
+        return 'Woking';
+    } else {
+        return 'Guildford';
+    }
+
+}
+
+/**
  * Get the details of the next train.
  */
 async function getTrainDetails() {
 
     // Hit the train API
-    const trainApiUrl = 'https://huxley.apphb.com/delays/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+    const trainApiUrl = buildTrainApiURl();
     const trainResult = await logFetch(trainApiUrl);
 
     // Loop & sort through the results
@@ -32,12 +63,16 @@ async function getTrainDetails() {
         // Loop through the results
         for (i = 0; i < trainResult.trainServices.length; i++) {
 
-            // Loop through the subsequent calling points
-            for (y = 0; y < trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
+            // We've got a hit, return immediately.
+            if (trainResult.trainServices[i].subsequentCallingPoints == null) {
+                trainTime.innerHTML = trainResult.trainServices[i].sta + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
+            } else {
+                // Loop through the subsequent calling points
+                for (y = 0; y < trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
 
-                if (trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === "Woking") {
-                    trainTime.innerHTML = trainResult.trainServices[i].std + " to Guildford";
-                    onTime.innerHTML = trainResult.trainServices[i].etd;
+                    if (trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === chooseCorrectStation()) {
+                        trainTime.innerHTML = trainResult.trainServices[i].std + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
+                    }
                 }
             }
         }
