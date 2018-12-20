@@ -22,9 +22,8 @@ async function logFetch(url) {
  * appropriate URL to hit based on train station.
  */
 function buildTrainApiURl() {
-    const currentdate = new Date();
 
-    if (currentdate.getHours() > 13) {
+    if (new Date().getHours() >= 11) {
         return 'https://huxley.apphb.com/delays/gld/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
     } else {
         return 'https://huxley.apphb.com/delays/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
@@ -37,10 +36,9 @@ function buildTrainApiURl() {
  * returns the appropriate station.
  */
 function chooseCorrectStation() {
-    const currentdate = new Date();
 
     // If we are in the afternoon look for return trip to Woking
-    if (currentdate.getHours() > 13) {
+    if (new Date().getHours() >= 11) {
         return 'Woking';
     } else {
         return 'Guildford';
