@@ -84,19 +84,19 @@ async function getTrainDetails() {
  */
 function mapWeatherIcon(weatherId) {
     if (weatherId >= 200 && weatherId <= 232) {
-        return "<img src='img/weather/thunderstorm.svg' width='200px'>";
+        return "<img src='img/weather/thunderstorm.svg' width='100px'>";
     } else if (weatherId >= 300 && weatherId <= 321) {
-        return "<img src='img/weather/heavy-rain.svg' width='200px'>";
+        return "<img src='img/weather/heavy-rain.svg' width='100px'>";
     } else if (weatherId >= 500 && weatherId <= 531) {
-        return "<img src='img/weather/light-rain.svg' width='200px'>";
+        return "<img src='img/weather/light-rain.svg' width='100px'>";
     } else if (weatherId >= 600 && weatherId <= 622) {
-        return "<img src='img/weather/snow.svg' width='200px'>";
+        return "<img src='img/weather/snow.svg' width='100px'>";
     } else if (weatherId === 800) {
-        return "<img src='img/weather/clear.svg' width='200px'>";
+        return "<img src='img/weather/clear.svg' width='100px'>";
     } else if (weatherId >= 801 && weatherId <= 804) {
-        return "<img src='img/weather/cloud.svg' width='200px'>";
+        return "<img src='img/weather/cloud.svg' width='100px'>";
     } else {
-        return "<img src='img/weather/clear.svg' width='200px'>";
+        return "<img src='img/weather/clear.svg' width='100px'>";
     }
 }
 
