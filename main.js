@@ -2,6 +2,7 @@ const trainTime = document.getElementById('trainTime');
 const onTime = document.getElementById('onTime');
 const temperature = document.getElementById('temperature');
 const weatherIcon = document.getElementById('weatherIcon');
+const recycling = document.getElementById('recycling');
 
 /**
  * Make an HTTP request for the given URL.
@@ -63,13 +64,13 @@ async function getTrainDetails() {
 
             // We've got a hit, return immediately.
             if (trainResult.trainServices[i].subsequentCallingPoints == null) {
-                trainTime.innerHTML = trainResult.trainServices[i].sta + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
+                trainTime.innerHTML = "<img src='img/train-time.svg' width='70px' /><br>" + trainResult.trainServices[i].sta + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
             } else {
                 // Loop through the subsequent calling points
                 for (y = 0; y < trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
 
                     if (trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === chooseCorrectStation()) {
-                        trainTime.innerHTML = trainResult.trainServices[i].std + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
+                        trainTime.innerHTML = "<img src='img/train-time.svg' width='70px' /><br>" + trainResult.trainServices[i].std + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
                     }
                 }
             }
@@ -118,12 +119,35 @@ async function getWeatherDetails() {
     weatherIcon.innerHTML = mapWeatherIcon(weatherResult.list[0].weather[0].id);
 }
 
+Date.prototype.getWeek = function() {
+    var onejan = new Date(this.getFullYear(),0,1);
+    var today = new Date(this.getFullYear(),this.getMonth(),this.getDate());
+    var dayOfYear = ((today - onejan + 86400000)/86400000);
+    return Math.ceil(dayOfYear/7)
+  };
+
+/**
+ * Determines the type of bin collection for this week.
+ */
+function determineBinCollection(){
+    const today = new Date();
+
+    // Every even week is rubbish
+    if (today.getWeek() % 2 ==0){
+        recycling.innerHTML = "<img src='img/trash.svg' width='70px'><br>Rubbish collection week";
+    } else {
+        // every odd week is recycling
+        recycling.innerHTML = "<img src='img/trash.svg' width='70px'><br>Recycling collection week";
+    }
+}
+
 /**
  * Initialise.
  */
 function init() {
     getTrainDetails();
     getWeatherDetails();
+    determineBinCollection();
 }
 
 init();

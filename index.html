@@ -46,19 +46,22 @@
         .trains {
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: 1fr 1fr 1fr;
-            grid-template-areas: ".""train-icon""train-time";
+            grid-template-rows: 1fr 1fr;
+            grid-template-areas: "recycling""train-time";
             grid-area: trains;
-            background-color: #6994e3;
             text-align: center;
         }
 
         .train-time {
             grid-area: train-time;
+            background-color: #6994e3;
+            padding-top: 20px;
         }
 
-        .train-icon {
-            grid-area: train-icon;
+        .recycling {
+            grid-area: recycling;
+            background-color: #f9d171;
+            padding-top: 20px;
         }
     </style>
 </head>
@@ -71,7 +74,7 @@
             <div class="icon" id="weatherIcon">icon</div>
         </div>
         <div class="trains">
-            <div class="train-icon" id="trainIcon"><img src="img/train-time.svg" width="100px" /></div>
+            <div class="recycling" id="recycling">-</div>
             <div class="train-time" id="trainTime">-</div>
         </div>
     </div>
