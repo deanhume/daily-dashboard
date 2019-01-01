@@ -151,3 +151,4 @@ function init() {
 }
 
 init();
+setInterval(init, 60000); // reload every minute
