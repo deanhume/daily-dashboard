@@ -1,1 +1,6 @@
 language: node_js
+install:
+  - npm install # make sure to install the deps when Travis runs.
+after_success:
+  #- ./deploy.sh  TODO(you): deploy the PR changes to your staging server.
+  - npm run lh -- https://deanhume.github.io/daily-dashboard/

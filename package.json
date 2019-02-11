@@ -1,0 +1,19 @@
+{
+  "name": "daily-dashboard",
+  "version": "1.0.0",
+  "description": "This is a simple web app for home use that displays the train times and todays weather for a given location. It is currently customised to the UK but could be extended anywhere. The idea behind this is to hook it up to a Raspberry Pi and touch screen for use in the home.",
+  "main": "main.js",
+  "scripts": {
+    "lh": "lighthousebot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deanhume/daily-dashboard.git"
+  },
+  "author": "Dean Hume",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deanhume/daily-dashboard/issues"
+  },
+  "homepage": "https://github.com/deanhume/daily-dashboard#readme"
+}
