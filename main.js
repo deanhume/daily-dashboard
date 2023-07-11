@@ -24,12 +24,12 @@ async function logFetch(url) {
  */
 function buildTrainApiURl() {
 
-    if (new Date().getHours() >= 11) {
-        return 'https://huxley2.azurewebsites.net/delays/read/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
-    } else {
-        return 'https://huxley2.azurewebsites.net/delays/tot/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
-    }
-
+    // if (new Date().getHours() >= 11) {
+    //     return 'https://huxley2.azurewebsites.net/delays/read/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+    // } else {
+    //     return 'https://huxley2.azurewebsites.net/delays/tot/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+    // }
+    return 'https://huxley2.azurewebsites.net/delays/tot/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
 }
 
 /**
@@ -134,7 +134,7 @@ function determineBinCollection(){
 
     // Every even week is rubbish
     if (today.getWeek() % 2 ==0){
-        recycling.innerHTML = "<img src='img/trash.svg' width='70px'><br>Rubbish collection week";
+        recycling.innerHTML = "<img src='img/trash.svg' width='70px'><br>Rubbish collection week<br>& Garden Waste collection week";
     } else {
         // every odd week is recycling
         recycling.innerHTML = "<img src='img/trash.svg' width='70px'><br>Recycling collection week";
