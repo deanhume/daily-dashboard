@@ -25,9 +25,9 @@ async function logFetch(url) {
 function buildTrainApiURl() {
 
     if (new Date().getHours() >= 11) {
-        return 'https://huxley.apphb.com/delays/gld/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+        return 'https://huxley2.azurewebsites.net/delays/read/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
     } else {
-        return 'https://huxley.apphb.com/delays/wby/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
+        return 'https://huxley2.azurewebsites.net/delays/tot/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
     }
 
 }
@@ -108,7 +108,7 @@ function mapWeatherIcon(weatherId) {
 async function getWeatherDetails() {
 
     // Hit the weather API
-    const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=west%20byfleet&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
+    const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=totnes&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
     const weatherResult = await logFetch(weatherApiUrl);
 
     // Update the temp
