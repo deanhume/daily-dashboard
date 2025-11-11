@@ -17,12 +17,20 @@
             .grid-container {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                grid-template-rows: 1fr;
-                grid-template-areas: "weather trains";
+                grid-template-rows: auto 1fr;
+                grid-template-areas: "date date" "weather trains";
                 grid-gap: 10px;
                 width: 100vw;
                 height: 100vh;
             }
+        }
+
+        .date {
+            grid-area: date;
+            background-color: #f6c7b3;
+            text-align: center;
+            padding: 20px;
+            font-size: 60px;
         }
 
         .weather {
@@ -84,6 +92,7 @@
 <body>
     <!-- www.layoutit.com/grid/QqUvP00 -->
     <div class="grid-container">
+        <div class="date" id="currentDate">-</div>
         <div class="weather">
             <div class="temperature" id="temperature">temp</div>
             <div class="icon" id="weatherIcon">icon</div>

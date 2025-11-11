@@ -2,6 +2,7 @@ const temperature = document.getElementById('temperature');
 const weatherIcon = document.getElementById('weatherIcon');
 const recycling = document.getElementById('recycling');
 const kidsActivities = document.getElementById('kidsActivities');
+const currentDate = document.getElementById('currentDate');
 
 /**
  * Make an HTTP request for the given URL.
@@ -18,24 +19,53 @@ async function logFetch(url) {
 }
 
 /**
+ * Display the current date.
+ */
+function displayCurrentDate() {
+    const today = new Date();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    const dayName = days[today.getDay()];
+    const day = today.getDate();
+    const month = months[today.getMonth()];
+    
+    const suffix = (day) => {
+        if (day > 3 && day < 21) return 'th';
+        switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    };
+    
+    currentDate.innerHTML = `${dayName} ${day}${suffix(day)} ${month}`;
+}
+
+/**
  * Get and display kids activities for the day.
  */
 async function getKidsActivities() {
     const activitiesResult = await logFetch('activities.json');
     
-    if (activitiesResult && activitiesResult.activities) {
-        let activitiesHtml = "<strong>Today's Activities</strong><ul>";
+    if (activitiesResult) {
+        const today = new Date();
+        const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        const dayName = days[today.getDay()];
         
-        // Display up to 5 random activities
-        const shuffled = activitiesResult.activities.sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 5);
+        const todaysActivities = activitiesResult[dayName];
         
-        selected.forEach(activity => {
-            activitiesHtml += `<li>${activity}</li>`;
-        });
-        
-        activitiesHtml += "</ul>";
-        kidsActivities.innerHTML = activitiesHtml;
+        if (todaysActivities) {
+            let activitiesHtml = "<strong>Today's Activities</strong><ul>";
+            
+            todaysActivities.forEach(activity => {
+                activitiesHtml += `<li>${activity}</li>`;
+            });
+            
+            activitiesHtml += "</ul>";
+            kidsActivities.innerHTML = activitiesHtml;
+        }
     }
 }
 
@@ -46,19 +76,19 @@ async function getKidsActivities() {
  */
 function mapWeatherIcon(weatherId) {
     if (weatherId >= 200 && weatherId <= 232) {
-        return "<img src='img/weather/thunderstorm.svg' width='100px'>";
+        return "<img src='img/weather/thunderstorm.svg' width='160px'>";
     } else if (weatherId >= 300 && weatherId <= 321) {
-        return "<img src='img/weather/heavy-rain.svg' width='100px'>";
+        return "<img src='img/weather/heavy-rain.svg' width='160px'>";
     } else if (weatherId >= 500 && weatherId <= 531) {
-        return "<img src='img/weather/light-rain.svg' width='100px'>";
+        return "<img src='img/weather/light-rain.svg' width='160px'>";
     } else if (weatherId >= 600 && weatherId <= 622) {
-        return "<img src='img/weather/snow.svg' width='100px'>";
+        return "<img src='img/weather/snow.svg' width='160px'>";
     } else if (weatherId === 800) {
-        return "<img src='img/weather/clear.svg' width='100px'>";
+        return "<img src='img/weather/clear.svg' width='160px'>";
     } else if (weatherId >= 801 && weatherId <= 804) {
-        return "<img src='img/weather/cloud.svg' width='100px'>";
+        return "<img src='img/weather/cloud.svg' width='160px'>";
     } else {
-        return "<img src='img/weather/clear.svg' width='100px'>";
+        return "<img src='img/weather/clear.svg' width='160px'>";
     }
 }
 
@@ -95,10 +125,10 @@ function determineBinCollection(){
 
     // Every even week is rubbish
     if (today.getWeek() % 2 ==0){
-        recycling.innerHTML = "<img src='img/trash.svg' width='70px'><br>Rubbish collection week<br>& Garden Waste collection week";
+        recycling.innerHTML = "<img src='img/trash.svg' width='120px'><br>Rubbish collection week<br>& Garden Waste collection week";
     } else {
         // every odd week is recycling
-        recycling.innerHTML = "<img src='img/trash.svg' width='70px'><br>Recycling collection week";
+        recycling.innerHTML = "<img src='img/trash.svg' width='120px'><br>Recycling collection week";
     }
 }
 
@@ -106,6 +136,7 @@ function determineBinCollection(){
  * Initialise.
  */
 function init() {
+    displayCurrentDate();
     getWeatherDetails();
     determineBinCollection();
     getKidsActivities();

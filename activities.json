@@ -1,19 +1,40 @@
 {
-  "activities": [
-    "Morning yoga stretch",
-    "Draw or paint a picture",
-    "Read a book together",
-    "Build with blocks or lego",
-    "Play in the garden",
-    "Bake cookies or cupcakes",
-    "Dance party time",
-    "Science experiment",
+  "monday": [
+    "School",
+    "Swimming Lessons"
+  ],
+  "tuesday": [
+    "School"
+  ],
+  "wednesday": [
     "Arts and crafts",
-    "Bike ride or scooter",
+    "Science experiment",
     "Board games",
-    "Puzzle time",
-    "Music practice",
-    "Nature walk",
-    "Play dough fun"
+    "Play in garden",
+    "Reading corner"
+  ],
+  "thursday": [
+    "Lego building",
+    "Bike or scooter ride",
+    "Cooking project",
+    "Hide and seek",
+    "Drawing time"
+  ],
+  "friday": [
+    "Movie afternoon",
+    "Play dough fun",
+    "Dress up games",
+    "Treasure hunt",
+    "Family game night"
+  ],
+  "saturday": [
+    "Park adventure",
+    "Sports activities",
+    "Picnic preparation",
+    "Water play",
+    "Visit friends"
+  ],
+  "sunday": [
+    "Lazy morning"
   ]
 }
