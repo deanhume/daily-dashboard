@@ -1,15 +1,15 @@
-# Daily Home Dashboard
+# Daily Home Dashboard 🏠
 
 This is a simple web app for home use that displays the current date, weather, bin collection days, and daily kids activities. It is currently customised to the UK but could be extended anywhere. The idea behind this is to hook it up to a Raspberry Pi and touch screen for use in the home.
 
-## Features
+## ✨ Features
 
-- **Current Date** - Displays today's date in an easy-to-read format (e.g., "Tuesday 11th November")
-- **Weather** - Shows current temperature and weather icon for your location
-- **Bin Collection Days** - Alternates between rubbish/garden waste and recycling collection weeks
-- **Kids Activities** - Displays 5 daily activities specific to each day of the week
+- **📅 Current Date** - Displays today's date in an easy-to-read format (e.g., "Tuesday 11th November")
+- **☀️ Weather** - Shows current temperature and weather icon for your location
+- **🗑️ Bin Collection Days** - Alternates between rubbish/garden waste and recycling collection weeks
+- **🎨 Kids Activities** - Displays 5 daily activities specific to each day of the week
 
-## Setup
+## 🚀 Setup
 
 1. Clone this repository
 2. Copy `config.example.js` to `config.js`
@@ -20,7 +20,7 @@ This is a simple web app for home use that displays the current date, weather, b
 
 **Note:** The `config.js` file is gitignored to keep your API key secure. Never commit this file to the repository.
 
-## Customization
+## ⚙️ Customization
 
 ### Kids Activities
 
@@ -44,7 +44,7 @@ Edit `activities.json` to customize activities for each day of the week. Each da
 
 The bin collection schedule is calculated based on even/odd weeks. Update the logic in `determineBinCollection()` in `main.js` to match your local collection schedule.
 
-## APIs
+## 🔌 APIs
 
 This web app uses the following service:
 
