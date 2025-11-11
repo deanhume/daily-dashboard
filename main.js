@@ -98,8 +98,8 @@ function mapWeatherIcon(weatherId) {
  */
 async function getWeatherDetails() {
 
-    // Hit the weather API - for Totnes, UK
-    const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=totnes,uk&APPID=1683b9c2231b220ff03ebe900e6ccdc0&units=metric';
+    // Hit the weather API
+    const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${config.weatherLocation},uk&APPID=${config.weatherApiKey}&units=metric`;
     const weatherResult = await logFetch(weatherApiUrl);
 
     // Update the temp
