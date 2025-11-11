@@ -47,15 +47,30 @@
             display: grid;
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr;
-            grid-template-areas: "recycling""train-time";
+            grid-template-areas: "recycling""kids-activities";
             grid-area: trains;
             text-align: center;
         }
 
-        .train-time {
-            grid-area: train-time;
+        .kids-activities {
+            grid-area: kids-activities;
             background-color: #6994e3;
-            padding-top: 20px;
+            padding: 20px;
+            font-size: 40px;
+            overflow-y: auto;
+        }
+
+        .kids-activities ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .kids-activities li {
+            margin: 10px 0;
+            padding: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
         }
 
         .recycling {
@@ -75,7 +90,7 @@
         </div>
         <div class="trains">
             <div class="recycling" id="recycling">-</div>
-            <div class="train-time" id="trainTime">-</div>
+            <div class="kids-activities" id="kidsActivities">-</div>
         </div>
     </div>
 </body>

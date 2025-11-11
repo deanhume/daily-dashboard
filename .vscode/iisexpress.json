@@ -1,0 +1,6 @@
+{
+  "port": 18420,
+  "path": "./",
+  "clr": "v4.0",
+  "protocol": "http"
+}

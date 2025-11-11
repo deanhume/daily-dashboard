@@ -1,8 +1,7 @@
-const trainTime = document.getElementById('trainTime');
-const onTime = document.getElementById('onTime');
 const temperature = document.getElementById('temperature');
 const weatherIcon = document.getElementById('weatherIcon');
 const recycling = document.getElementById('recycling');
+const kidsActivities = document.getElementById('kidsActivities');
 
 /**
  * Make an HTTP request for the given URL.
@@ -19,62 +18,24 @@ async function logFetch(url) {
 }
 
 /**
- * Checks the time of day and returns the 
- * appropriate URL to hit based on train station.
+ * Get and display kids activities for the day.
  */
-function buildTrainApiURl() {
-
-    // if (new Date().getHours() >= 11) {
-    //     return 'https://huxley2.azurewebsites.net/delays/read/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
-    // } else {
-    //     return 'https://huxley2.azurewebsites.net/delays/tot/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
-    // }
-    return 'https://huxley2.azurewebsites.net/delays/tot/30?accessToken=b09cb836-f190-445d-8b96-372eb024141d&expand=true';
-}
-
-/**
- * Checks the time of day and
- * returns the appropriate station.
- */
-function chooseCorrectStation() {
-
-    // If we are in the afternoon look for return trip to Woking
-    if (new Date().getHours() >= 11) {
-        return 'Woking';
-    } else {
-        return 'Guildford';
-    }
-
-}
-
-/**
- * Get the details of the next train.
- */
-async function getTrainDetails() {
-
-    // Hit the train API
-    const trainApiUrl = buildTrainApiURl();
-    const trainResult = await logFetch(trainApiUrl);
-
-    // Loop & sort through the results
-    if (trainResult.trainServices && trainResult.trainServices.length > 0) {
-
-        // Loop through the results
-        for (i = 0; i < trainResult.trainServices.length; i++) {
-
-            // We've got a hit, return immediately.
-            if (trainResult.trainServices[i].subsequentCallingPoints == null) {
-                trainTime.innerHTML = "<img src='img/train-time.svg' width='70px' /><br>" + trainResult.trainServices[i].sta + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
-            } else {
-                // Loop through the subsequent calling points
-                for (y = 0; y < trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint.length; y++) {
-
-                    if (trainResult.trainServices[i].subsequentCallingPoints[0].callingPoint[y].locationName === chooseCorrectStation()) {
-                        trainTime.innerHTML = "<img src='img/train-time.svg' width='70px' /><br>" + trainResult.trainServices[i].std + " to " + chooseCorrectStation() + "<br>" + trainResult.trainServices[i].eta;
-                    }
-                }
-            }
-        }
+async function getKidsActivities() {
+    const activitiesResult = await logFetch('activities.json');
+    
+    if (activitiesResult && activitiesResult.activities) {
+        let activitiesHtml = "<strong>Today's Activities</strong><ul>";
+        
+        // Display up to 5 random activities
+        const shuffled = activitiesResult.activities.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 5);
+        
+        selected.forEach(activity => {
+            activitiesHtml += `<li>${activity}</li>`;
+        });
+        
+        activitiesHtml += "</ul>";
+        kidsActivities.innerHTML = activitiesHtml;
     }
 }
 
@@ -107,16 +68,16 @@ function mapWeatherIcon(weatherId) {
  */
 async function getWeatherDetails() {
 
-    // Hit the weather API
-    const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=totnes&units=metric&cnt=1&appid=d94bcd435b62a031771c35633f9f310a';
+    // Hit the weather API - for Totnes, UK
+    const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=totnes,uk&APPID=1683b9c2231b220ff03ebe900e6ccdc0&units=metric';
     const weatherResult = await logFetch(weatherApiUrl);
 
     // Update the temp
-    const weatherTemperature = weatherResult.list[0].temp;
-    temperature.innerHTML = weatherTemperature.day + ' ° C';
-
+    const weatherTemperature = weatherResult.main.temp;
+    temperature.innerHTML = weatherTemperature + ' ° C';
+   
     // Update the icon
-    weatherIcon.innerHTML = mapWeatherIcon(weatherResult.list[0].weather[0].id);
+    weatherIcon.innerHTML = mapWeatherIcon(weatherResult.weather[0].id);
 }
 
 Date.prototype.getWeek = function() {
@@ -145,9 +106,9 @@ function determineBinCollection(){
  * Initialise.
  */
 function init() {
-    getTrainDetails();
     getWeatherDetails();
     determineBinCollection();
+    getKidsActivities();
 }
 
 init();
